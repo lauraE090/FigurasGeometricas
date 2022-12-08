@@ -58,11 +58,10 @@ public class Pizarra extends JFrame implements Runnable {
 		setResizable(false);
 		setLayout(new BorderLayout());
 
-		// Si la ventana pierde el foco del teclado, recuperarlo
 		KeyboardFocusManager.
 						getCurrentKeyboardFocusManager().
 						addPropertyChangeListener("focusOwner", (PropertyChangeEvent e) -> {
-							//System.out.println(e.toString());
+							
 							requestFocusInWindow();
 						});
 
@@ -72,7 +71,6 @@ public class Pizarra extends JFrame implements Runnable {
 
 				FiguraModel selectedModel = listFiguras.getSelectedValue();
 
-				// Quitar la seleccion de la figura
 				if (e.getExtendedKeyCode() == VK_SPACE && selectedModel != null) {
 					logger.append(selectedModel.getNombre() + " deseleccionado.");
 					listFiguras.clearSelection();
@@ -128,6 +126,11 @@ public class Pizarra extends JFrame implements Runnable {
                                                 JColorChooser vC = new JColorChooser();
                                                 color = vC.showDialog(null, "Seleccione un Color", Color.BLACK);
                                                 selectedModel.setBackground(color);
+                                                break;
+                                        }case VK_DELETE:{
+                                                
+                                                listModel.removeElement(selectedModel);
+                                                selectedModel = null;
                                                 break;
                                         }
 				}
@@ -239,7 +242,6 @@ public class Pizarra extends JFrame implements Runnable {
                 leftPanel.add(btnPentagono);
                 leftPanel.add(btnEstrella);
 
-		/* centerPanel components & design */
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.setBackground(Color.WHITE);
 
@@ -281,7 +283,6 @@ public class Pizarra extends JFrame implements Runnable {
 
 		centerPanel.add(canvasPanel, BorderLayout.CENTER);
 
-		/* rightPanel components & design */
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
                 rightPanel.setBackground(Color.WHITE);
 
@@ -306,7 +307,6 @@ public class Pizarra extends JFrame implements Runnable {
 			repaint();
 		});
 
-		//canvasPanel.setModel(listModel);
 		scrollFiguras.setViewportView(listFiguras);
 
 		rightPanel.add(rightPanelTitle);
@@ -318,7 +318,6 @@ public class Pizarra extends JFrame implements Runnable {
 
 	}
 
-	/* Variables declaration */
 	private FiguraModel currentFigura;
 
 	private JPanel leftPanel;
@@ -326,7 +325,6 @@ public class Pizarra extends JFrame implements Runnable {
 	private JPanel rightPanel;
 	private JLabel leftPanelTitle;
 
-	/* leftPanel components */
 	private ButtonGroup buttonGroup;
 	private JToggleButton btnTriangulo;
 	private JToggleButton btnCuadrilatero;
@@ -336,11 +334,9 @@ public class Pizarra extends JFrame implements Runnable {
         
         private Color color;
 
-	/* centerPanel components */
 	private CanvasPanel canvasPanel;
 	private JTextArea logger;
 
-	/* rightPanel components */
 	private JLabel rightPanelTitle;
 	private JScrollPane scrollFiguras;
 	private JList<FiguraModel> listFiguras;

@@ -37,7 +37,6 @@ public class CuadrilateroModel extends FiguraModel {
 		g.setColor(background);
 		g.fillPolygon(puntos.getXPoints(), puntos.getYPoints(), puntos.size());
 
-		// Reset color
 		g.setColor(Color.BLACK);
 	}
 

@@ -2,6 +2,7 @@ package models;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -13,245 +14,245 @@ import java.util.Iterator;
  */
 public class PointsModel implements Iterable<Point>, IDrawable {
 
-	private Point[] puntos;
+    private Point[] puntos;
 
-	public PointsModel() {
-		this(0);
-	}
+    public PointsModel() {
+        this(0);
+    }
 
-	public PointsModel(int capacity) {
-		puntos = new Point[capacity];
-	}
+    public PointsModel(int capacity) {
+        puntos = new Point[capacity];
+    }
 
-	public boolean setValueAt(int index, Point point) {
+    public boolean setValueAt(int index, Point point) {
 
-		try {
-			puntos[index] = point;
-		} catch (Exception ex) {
-			return false;
-		}
+        try {
+            puntos[index] = point;
+        } catch (Exception ex) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public Point getValueAt(int index) {
+    public Point getValueAt(int index) {
 
-		try {
-			return puntos[index];
-		} catch (Exception ex) {
-			return null;
-		}
-	}
+        try {
+            return puntos[index];
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
-	public static int distance(Point p1, Point p2) {
+    public static int distance(Point p1, Point p2) {
 
-		int aux = (int) (Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+        int aux = (int) (Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 
-		return (int) Math.sqrt(aux);
-	}
+        return (int) Math.sqrt(aux);
+    }
 
-	public int size() {
-		return puntos.length;
-	}
+    public int size() {
+        return puntos.length;
+    }
 
-	public Iterator<Point> iterator() {
-		return Arrays.asList(puntos).iterator();
-	}
+    public Iterator<Point> iterator() {
+        return Arrays.asList(puntos).iterator();
+    }
 
-	public void up(int c) {
+    public void up(int c) {
 
-		MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
+        MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
 
-		MatrixModel aux = new MatrixModel(3, 3, 1);
+        MatrixModel aux = new MatrixModel(3, 3, 1);
 
-		aux.traslacionAt(1, -c);
+        aux.traslacionAt(1, -c);
 
-		matrixPoints.producto(aux);
+        matrixPoints.producto(aux);
 
-		puntos = matrixPoints.toPoints();
-	}
+        puntos = matrixPoints.toPoints();
+    }
 
-	public void down(int c) {
+    public void down(int c) {
 
-		MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
+        MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
 
-		MatrixModel aux = new MatrixModel(3, 3, 1);
+        MatrixModel aux = new MatrixModel(3, 3, 1);
 
-		aux.traslacionAt(1, c);
+        aux.traslacionAt(1, c);
 
-		matrixPoints.producto(aux);
+        matrixPoints.producto(aux);
 
-		puntos = matrixPoints.toPoints();
+        puntos = matrixPoints.toPoints();
 
-	}
+    }
 
-	public void right(int c) {
+    public void right(int c) {
 
-		MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
+        MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
 
-		MatrixModel aux = new MatrixModel(3, 3, 1);
+        MatrixModel aux = new MatrixModel(3, 3, 1);
 
-		aux.traslacionAt(0, c);
+        aux.traslacionAt(0, c);
 
-		matrixPoints.producto(aux);
+        matrixPoints.producto(aux);
 
-		puntos = matrixPoints.toPoints();
-	}
+        puntos = matrixPoints.toPoints();
+    }
 
-	public void left(int c) {
+    public void left(int c) {
 
-		MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
+        MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
 
-		MatrixModel aux = new MatrixModel(3, 3, 1);
+        MatrixModel aux = new MatrixModel(3, 3, 1);
 
-		aux.traslacionAt(0, -c);
+        aux.traslacionAt(0, -c);
 
-		matrixPoints.producto(aux);
+        matrixPoints.producto(aux);
 
-		puntos = matrixPoints.toPoints();
+        puntos = matrixPoints.toPoints();
 
-	}
+    }
 
-	public void rotateLeft(double angulo) {
+    public void rotateLeft(double angulo) {
 
-		MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
+        MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
 
-		MatrixModel aux = new MatrixModel(3, 3, 1);
+        MatrixModel aux = new MatrixModel(3, 3, 1);
 
-		var sorted = sort();
+        var sorted = sort();
 
-		int[] nMin = new int[]{-sorted[0].x, -sorted[0].y};
-		int[] pMin = new int[]{sorted[0].x, sorted[0].y};
-		
-		aux.traslacion(nMin);
-		aux.rotacion(angulo);
-		aux.traslacion(pMin);
+        double[] nMin = new double[]{-sorted[0].x, -sorted[0].y};
+        double[] pMin = new double[]{sorted[0].x, sorted[0].y};
 
-		matrixPoints.producto(aux);
+        aux.traslacion(nMin);
+        aux.rotacion(angulo);
+        aux.traslacion(pMin);
 
-		puntos = matrixPoints.toPoints();
+        matrixPoints.producto(aux);
 
-	}
+        puntos = matrixPoints.toPoints();
 
-	public void rotateRight(double angulo) {
+    }
 
-		MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
+    public void rotateRight(double angulo) {
 
-		MatrixModel aux = new MatrixModel(3, 3, 1);
-		
-		var sorted = sort();
+        MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
 
-		int[] nMin = new int[]{-sorted[0].x, -sorted[0].y};
-		int[] pMin = new int[]{sorted[0].x, sorted[0].y};
+        MatrixModel aux = new MatrixModel(3, 3, 1);
 
-		aux.traslacion(nMin);
-		aux.rotacion(-angulo);
-		aux.traslacion(pMin);
+        var sorted = sort();
 
-		matrixPoints.producto(aux);
+        double[] nMin = new double[]{-sorted[0].x, -sorted[0].y};
+        double[] pMin = new double[]{sorted[0].x, sorted[0].y};
 
-		puntos = matrixPoints.toPoints();
+        aux.traslacion(nMin);
+        aux.rotacion(-angulo);
+        aux.traslacion(pMin);
 
-	}
+        matrixPoints.producto(aux);
 
-	public void zoomIn(int c) {
+        puntos = matrixPoints.toPoints();
 
-		MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
+    }
 
-		MatrixModel aux = new MatrixModel(3, 3, 1);
+    public void zoomIn(int c) {
 
-		var sorted = sort();
-		
-		int[] nMin = new int[]{-sorted[0].x, -sorted[0].y};
-		int[] pMin = new int[]{sorted[0].x, sorted[0].y};
-		
-		aux.traslacion(nMin);
-		aux.escalar(c);
-		aux.traslacion(pMin);
+        MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
 
-		matrixPoints.producto(aux);
+        MatrixModel aux = new MatrixModel(3, 3, 1);
 
-		puntos = matrixPoints.toPoints();
+        var sorted = sort();
 
-	}
+        double[] nMin = new double[]{-sorted[0].x, -sorted[0].y};
+        double[] pMin = new double[]{sorted[0].x, sorted[0].y};
 
-	public void zoomOut(int c) {
+        aux.traslacion(nMin);
+        aux.escalar(c);
+        aux.traslacion(pMin);
 
-		MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
+        matrixPoints.producto(aux);
 
-		MatrixModel aux = new MatrixModel(3, 3, 1);
+        puntos = matrixPoints.toPoints();
 
-		var sorted = sort();
-		
-		int[] nMin = new int[]{-sorted[0].x, -sorted[0].y};
-		int[] pMin = new int[]{sorted[0].x, sorted[0].y};
-		
-		aux.traslacion(nMin);
-		aux.escalar(1/c);
-		aux.traslacion(pMin);
+    }
 
-		matrixPoints.producto(aux);
+    public void zoomOut(int c) {
 
-		puntos = matrixPoints.toPoints();
+        MatrixModel matrixPoints = MatrixModel.matrixFromPoints(this);
 
-	}
+        MatrixModel aux = new MatrixModel(3, 3, 1);
 
-	public Point[] sort() {
+        var sorted = sort();
 
-		Point[] aux = puntos.clone();
+        double[] nMin = new double[]{-sorted[0].x, -sorted[0].y};
+        double[] pMin = new double[]{sorted[0].x, sorted[0].y};
 
-		Arrays.sort(aux, (o1, o2) -> {
-			return o1.distance(0, 0) < o2.distance(0, 0) ? -1 : 1;
-		});
+        aux.traslacion(nMin);
+        aux.escalar(1d / c);
+        aux.traslacion(pMin);
 
-		return aux;
-	}
-	
-	public int[] getXPoints() {
+        matrixPoints.producto(aux);
 
-		int[] xPoints = new int[size()];
+        puntos = matrixPoints.toPoints();
 
-		for (int i = 0; i < size(); i++) {
-			xPoints[i] = puntos[i].x;
-		}
+    }
 
-		return xPoints;
-	}
+    public Point[] sort() {
 
-	public int[] getYPoints() {
+        Point[] aux = puntos.clone();
 
-		int[] yPoints = new int[size()];
+        Arrays.sort(aux, (o1, o2) -> {
+            return o1.distance(0, 0) < o2.distance(0, 0) ? -1 : 1;
+        });
 
-		for (int i = 0; i < size(); i++) {
-			yPoints[i] = puntos[i].y;
-		}
+        return aux;
+    }
 
-		return yPoints;
-	}
+    public int[] getXPoints() {
 
-	public boolean isFull() {
+        int[] xPoints = new int[size()];
 
-		for (var p : this) {
-			if (p == null) {
-				return false;
-			}
-		}
+        for (int i = 0; i < size(); i++) {
+            xPoints[i] = (int) puntos[i].getX();
+        }
 
-		return true;
-	}
+        return xPoints;
+    }
 
-	@Override
-	public void dibujar(Graphics2D g) {
+    public int[] getYPoints() {
 
-		for (var p : this) {
+        int[] yPoints = new int[size()];
 
-			if (p == null) {
-				continue;
-			}
+        for (int i = 0; i < size(); i++) {
+            yPoints[i] = (int) puntos[i].getY();
+        }
 
-			g.fillRect(p.x, p.y, 2, 2);
-		}
+        return yPoints;
+    }
 
-	}
+    public boolean isFull() {
+
+        for (var p : this) {
+            if (p == null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void dibujar(Graphics2D g) {
+
+        for (var p : this) {
+
+            if (p == null) {
+                continue;
+            }
+
+            g.fillRect(p.x, p.y, 2, 2);
+        }
+
+    }
 
 }

@@ -44,7 +44,6 @@ public class CirculoModel extends FiguraModel {
 		g.setColor(background);
 		g.fillOval(p1.x - distance, p1.y - distance, 2 * distance, 2 * distance);
 
-		// Reset color
 		g.setColor(Color.BLACK);
 
 	}
@@ -66,7 +65,7 @@ public class CirculoModel extends FiguraModel {
 			valores.add(radio);
 		}
 
-		return "CirculoModel{\n" + String.join(", ", valores) + "\n}";
+		return "Circulo";
 	}
 
 }

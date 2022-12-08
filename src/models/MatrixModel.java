@@ -9,398 +9,397 @@ import java.util.Iterator;
  *
  * @author Familia
  */
-public class MatrixModel implements IMatrix, Iterable<ArrayList<Integer>> {
+public class MatrixModel implements IMatrix, Iterable<ArrayList<Double>> {
 
-	public final MatrixModel IDENTITY;
+    public final MatrixModel IDENTITY;
 
-	private final int rows;
-	private final int columns;
-	private final boolean identity;
-	private ArrayList<Integer>[] matrix;
+    private final int rows;
+    private final int columns;
+    private final boolean identity;
+    private ArrayList<Double>[] matrix;
 
-	public MatrixModel(int rows, int columns) {
-		this(rows, columns, 0);
-	}
+    public MatrixModel(int rows, int columns) {
+        this(rows, columns, 0);
+    }
 
-	public MatrixModel(int rows, int columns, int diagonal) {
-		this(rows, columns, diagonal, false);
-	}
+    public MatrixModel(int rows, int columns, int diagonal) {
+        this(rows, columns, diagonal, false);
+    }
 
-	public MatrixModel(int orden) {
-		this(orden, 1, false);
-	}
+    public MatrixModel(int orden) {
+        this(orden, 1, false);
+    }
 
-	private MatrixModel(int orden, boolean identity) {
-		this(orden, 1, identity);
-	}
+    private MatrixModel(int orden, boolean identity) {
+        this(orden, 1, identity);
+    }
 
-	private MatrixModel(int orden, int diagonal, boolean identity) {
-		this(orden, orden, diagonal, identity);
-	}
+    private MatrixModel(int orden, double diagonal, boolean identity) {
+        this(orden, orden, diagonal, identity);
+    }
 
-	private MatrixModel(int rows, int columns, int diagonal, boolean identity) {
-		this.rows = rows;
-		this.columns = columns;
-		this.identity = identity;
+    private MatrixModel(int rows, int columns, double diagonal, boolean identity) {
+        this.rows = rows;
+        this.columns = columns;
+        this.identity = identity;
 
-		initMatrix();
-		initMatrixWithDiagonal(diagonal);
-		IDENTITY = initIdentity();
-	}
+        initMatrix();
+        initMatrixWithDiagonal(diagonal);
+        IDENTITY = initIdentity();
+    }
 
-	private void initMatrix() {
-		matrix = new ArrayList[rows];
+    private void initMatrix() {
+        matrix = new ArrayList[rows];
 
-		for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows; i++) {
 
-			matrix[i] = new ArrayList<>();
+            matrix[i] = new ArrayList<>();
 
-			for (int j = 0; j < columns; j++) {
-				matrix[i].add(0);
-			}
+            for (int j = 0; j < columns; j++) {
+                matrix[i].add(0d);
+            }
 
-		}
-	}
+        }
+    }
 
-	private MatrixModel initIdentity() {
+    private MatrixModel initIdentity() {
 
-		if (this.isIdentity()) {
-			return this;
-		}
+        if (this.isIdentity()) {
+            return this;
+        }
 
-		MatrixModel _identity = new MatrixModel(rows, true);
+        MatrixModel _identity = new MatrixModel(rows, true);
 
-		return _identity;
-	}
+        return _identity;
+    }
 
-	private void initMatrixWithDiagonal(int diagonalNumber) {
+    private void initMatrixWithDiagonal(double diagonalNumber) {
 
-		if (this.isIdentity()) {
-			diagonalNumber = 1;
-		}
+        if (this.isIdentity()) {
+            diagonalNumber = 1;
+        }
 
-		for (int pointIndex = 0; pointIndex < this.columns; pointIndex++) {
+        for (int pointIndex = 0; pointIndex < this.columns; pointIndex++) {
 
-			for (int varIndex = 0; varIndex < this.rows; varIndex++) {
+            for (int varIndex = 0; varIndex < this.rows; varIndex++) {
 
-				if (pointIndex == varIndex) {
-					this._setValueAt(varIndex, pointIndex, diagonalNumber);
-				}
+                if (pointIndex == varIndex) {
+                    this._setValueAt(varIndex, pointIndex, diagonalNumber);
+                }
 
-			}
+            }
 
-		}
+        }
 
-	}
+    }
 
-	private boolean _addPoint(int[] point) {
+    private boolean _addPoint(double[] point) {
 
-		if (rows != point.length) {
-			return false;
-		}
+        if (rows != point.length) {
+            return false;
+        }
 
-		for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows; i++) {
 
-			if (!matrix[i].add(point[i])) {
-				initMatrix();
-				return false;
-			}
+            if (!matrix[i].add(point[i])) {
+                initMatrix();
+                return false;
+            }
 
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean addPoint(int[] point) {
+    @Override
+    public boolean addPoint(double[] point) {
 
-		if (this.isIdentity()) {
-			return false;
-		}
+        if (this.isIdentity()) {
+            return false;
+        }
 
-		return _addPoint(point);
-	}
+        return _addPoint(point);
+    }
 
-	private boolean _setValueAt(int row, int column, int value) {
+    private boolean _setValueAt(int row, int column, double value) {
 
-		if (column < 0 || row < 0) {
-			return false;
-		}
+        if (column < 0 || row < 0) {
+            return false;
+        }
 
-		if (row > rows - 1) {
-			return false;
-		}
+        if (row > rows - 1) {
+            return false;
+        }
 
-		if (matrix[row] == null) {
-			return false;
-		}
+        if (matrix[row] == null) {
+            return false;
+        }
 
-		if (column > columns - 1) {
-			return false;
-		}
+        if (column > columns - 1) {
+            return false;
+        }
 
-		matrix[row].set(column, value);
-		return true;
-	}
+        matrix[row].set(column, value);
+        return true;
+    }
 
-	@Override
-	public boolean setValueAt(int row, int column, int value) {
+    @Override
+    public boolean setValueAt(int row, int column, double value) {
 
-		if (this.isIdentity()) {
-			return false;
-		}
+        if (this.isIdentity()) {
+            return false;
+        }
 
-		return _setValueAt(row, column, value);
+        return _setValueAt(row, column, value);
 
-	}
+    }
 
-	@Override
-	public int get(int row, int column) {
-		return matrix[row].get(column);
-	}
+    @Override
+    public double get(int row, int column) {
+        return matrix[row].get(column);
+    }
 
-	public static MatrixModel producto(MatrixModel matrix1, MatrixModel matrix2) {
+    public static MatrixModel producto(MatrixModel matrix1, MatrixModel matrix2) {
 
-		if (matrix2.rows != matrix1.columns) {
-			return null;
-		}
+        if (matrix2.rows != matrix1.columns) {
+            return null;
+        }
 
-		MatrixModel product = new MatrixModel(matrix1.rows, matrix2.columns, 0, false);
+        MatrixModel product = new MatrixModel(matrix1.rows, matrix2.columns, 0, false);
 
-		for (int i = 0; i < matrix1.rows; i++) {
+        for (int i = 0; i < matrix1.rows; i++) {
 
-			for (int j = 0; j < matrix2.columns; j++) {
+            for (int j = 0; j < matrix2.columns; j++) {
 
-				for (int k = 0; k < matrix2.rows; k++) {
+                for (int k = 0; k < matrix2.rows; k++) {
 
-					product.setValueAt(i, j, product.get(i, j)
-									+ matrix1.get(i, k) * matrix2.get(k, j));
+                    product.setValueAt(i, j, product.get(i, j)
+                            + matrix1.get(i, k) * matrix2.get(k, j));
 
-				}
+                }
 
-			}
+            }
 
-		}
+        }
 
-		return product;
-	}
+        return product;
+    }
 
-	public static MatrixModel matrixFromPoints(PointsModel points) {
+    public static MatrixModel matrixFromPoints(PointsModel points) {
 
-		MatrixModel aux = new MatrixModel(3, points.size());
+        MatrixModel aux = new MatrixModel(3, points.size());
 
-		int[] xs = points.getXPoints();
-		int[] ys = points.getYPoints();
+        int[] xs = points.getXPoints();
+        int[] ys = points.getYPoints();
 
-		for (int i = 0; i < xs.length; i++) {
-			aux.setValueAt(0, i, xs[i]);
-		}
+        for (int i = 0; i < xs.length; i++) {
+            aux.setValueAt(0, i, xs[i]);
+        }
 
-		for (int i = 0; i < ys.length; i++) {
-			aux.setValueAt(1, i, ys[i]);
-		}
+        for (int i = 0; i < ys.length; i++) {
+            aux.setValueAt(1, i, ys[i]);
+        }
 
-		for (int i = 0; i < points.size(); i++) {
-			aux.setValueAt(2, i, 1);
-		}
+        for (int i = 0; i < points.size(); i++) {
+            aux.setValueAt(2, i, 1);
+        }
 
-		return aux;
-	}
+        return aux;
+    }
 
-	@Override
-	public void producto(MatrixModel other) {
+    @Override
+    public void producto(MatrixModel other) {
 
-		if (this.isIdentity()) {
-			return;
-		}
+        if (this.isIdentity()) {
+            return;
+        }
 
-		var producto = producto(other, this);
+        var producto = producto(other, this);
 
-		if (producto == null) {
-			return;
-		}
+        if (producto == null) {
+            return;
+        }
 
-		matrix = producto.matrix;
-	}
+        matrix = producto.matrix;
+    }
 
-	@Override
-	public void escalar(int escala) {
+    @Override
+    public void escalar(double escala) {
 
-		int[] escalaAll = new int[rows - 1];
+        double[] escalaAll = new double[rows - 1];
 
-		for (int i = 0; i < escalaAll.length; i++) {
-			escalaAll[i] = escala;
-		}
+        for (int i = 0; i < escalaAll.length; i++) {
+            escalaAll[i] = escala;
+        }
 
-		escalar(escalaAll);
-	}
+        escalar(escalaAll);
+    }
 
-	@Override
-	public void escalarAt(int variableIndex, int escala) {
+    @Override
+    public void escalarAt(int variableIndex, double escala) {
 
-		MatrixModel matrizEscala = new MatrixModel(rows);
+        MatrixModel matrizEscala = new MatrixModel(rows);
 
-		matrizEscala.initMatrixWithDiagonal(1);
+        matrizEscala.initMatrixWithDiagonal(1);
 
-		for (int pointIndex = 0; pointIndex < matrizEscala.columns; pointIndex++) {
+        for (int pointIndex = 0; pointIndex < matrizEscala.columns; pointIndex++) {
 
-			for (int varIndex = 0; varIndex < matrizEscala.rows - 1; varIndex++) {
+            for (int varIndex = 0; varIndex < matrizEscala.rows - 1; varIndex++) {
 
-				if (pointIndex == varIndex && variableIndex == varIndex) {
-					matrizEscala._setValueAt(varIndex, pointIndex, escala);
-				}
+                if (pointIndex == varIndex && variableIndex == varIndex) {
+                    matrizEscala._setValueAt(varIndex, pointIndex, escala);
+                }
 
-			}
+            }
 
-		}
+        }
 
-		producto(matrizEscala);
-	}
+        producto(matrizEscala);
+    }
 
+    @Override
+    public void escalar(double[] escalas) {
 
-	@Override
-	public void escalar(int[] escalas) {
+        if (escalas.length > rows - 1) { // 3 2
+            return;
+        }
 
-		if (escalas.length > rows - 1) { // 3 2
-			return;
-		}
+        for (int i = 0; i < escalas.length; i++) {
+            escalarAt(i, escalas[i]);
+        }
 
-		for (int i = 0; i < escalas.length; i++) {
-			escalarAt(i, escalas[i]);
-		}
+    }
 
-	}
+    @Override
+    public void rotacion(double angulo) {
 
-	@Override
-	public void rotacion(double angulo) {
+        if (rows < 3) {
+            return;
+        }
 
-		if (rows < 3) {
-			return;
-		}
+        MatrixModel matrizRotacion = new MatrixModel(rows);
 
-		MatrixModel matrizRotacion = new MatrixModel(rows);
+        matrizRotacion.initMatrixWithDiagonal(1);
 
-		matrizRotacion.initMatrixWithDiagonal(1);
+        matrizRotacion._setValueAt(0, 0, (int) Math.cos(Math.toRadians(angulo)));
+        matrizRotacion._setValueAt(0, 1, (int) -Math.sin(Math.toRadians(angulo)));
+        matrizRotacion._setValueAt(1, 0, (int) Math.sin(Math.toRadians(angulo)));
+        matrizRotacion._setValueAt(1, 1, (int) Math.cos(Math.toRadians(angulo)));
 
-		matrizRotacion._setValueAt(0, 0, (int) Math.cos(Math.toRadians(angulo)));
-		matrizRotacion._setValueAt(0, 1, (int) -Math.sin(Math.toRadians(angulo)));
-		matrizRotacion._setValueAt(1, 0, (int) Math.sin(Math.toRadians(angulo)));
-		matrizRotacion._setValueAt(1, 1, (int) Math.cos(Math.toRadians(angulo)));
+        producto(matrizRotacion);
+    }
 
-		producto(matrizRotacion);
-	}
+    @Override
+    public void traslacionAt(int variableIndex, double t) {
 
-	@Override
-	public void traslacionAt(int variableIndex, int t) {
+        MatrixModel matrizTraslacion = new MatrixModel(rows);
 
-		MatrixModel matrizTraslacion = new MatrixModel(rows);
+        matrizTraslacion.initMatrixWithDiagonal(1);
 
-		matrizTraslacion.initMatrixWithDiagonal(1);
+        for (int varIndex = 0; varIndex < matrizTraslacion.rows - 1; varIndex++) {
 
-		for (int varIndex = 0; varIndex < matrizTraslacion.rows - 1; varIndex++) {
+            if (varIndex == variableIndex) {
+                matrizTraslacion._setValueAt(varIndex, matrizTraslacion.columns - 1, t);
+            }
 
-			if (varIndex == variableIndex) {
-				matrizTraslacion._setValueAt(varIndex, matrizTraslacion.columns - 1, t);
-			}
+        }
 
-		}
+        producto(matrizTraslacion);
 
-		producto(matrizTraslacion);
+    }
 
-	}
+    @Override
+    public void traslacion(double[] ts) {
 
-	@Override
-	public void traslacion(int[] ts) {
+        if (ts.length > rows - 1) {
+            return;
+        }
 
-		if (ts.length > rows - 1) {
-			return;
-		}
+        for (int i = 0; i < ts.length; i++) {
+            traslacionAt(i, ts[i]);
+        }
 
-		for (int i = 0; i < ts.length; i++) {
-			traslacionAt(i, ts[i]);
-		}
+    }
 
-	}
+    public static ArrayList<String> arrayIntToString(ArrayList<Integer> integers) {
 
-	public static ArrayList<String> arrayIntToString(ArrayList<Integer> integers) {
+        ArrayList<String> result = new ArrayList<>();
 
-		ArrayList<String> result = new ArrayList<>();
+        for (var integer : integers) {
+            result.add(String.valueOf(integer));
+        }
 
-		for (var integer : integers) {
-			result.add(String.valueOf(integer));
-		}
+        return result;
+    }
 
-		return result;
-	}
+    @Override
+    public String toString() {
 
-	@Override
-	public String toString() {
+        String result = "";
 
-		String result = "";
+        if (rows == 0) {
+            return "";
+        }
 
-		if (rows == 0) {
-			return "";
-		}
+        for (int i = 0; i < rows - 1; i++) {
 
-		for (int i = 0; i < rows - 1; i++) {
+            result += "X" + (i + 1) + "\t→ | ";
 
-			result += "X" + (i + 1) + "\t→ | ";
+            for (var it : matrix[i]) {
 
-			for (var it : matrix[i]) {
+                result += it + " ";
 
-				result += it + " ";
+            }
 
-			}
+            result += "|\n";
+        }
 
-			result += "|\n";
-		}
+        result += "h\t→ | ";
 
-		result += "h\t→ | ";
+        for (var it : matrix[rows - 1]) {
 
-		for (var it : matrix[rows - 1]) {
+            result += it + " ";
 
-			result += it + " ";
+        }
 
-		}
+        result += "|\n";
 
-		result += "|\n";
+        return result;
+    }
 
-		return result;
-	}
+    public ArrayList<Double>[] toArray() {
+        return matrix.clone();
+    }
 
-	public ArrayList<Integer>[] toArray() {
-		return matrix.clone();
-	}
+    public Point[] toPoints() {
 
-	public Point[] toPoints() {
+        Point[] points = new Point[columns];
 
-		Point[] points = new Point[columns];
+        for (int i = 0; i < columns; i++) {
 
-		for (int i = 0; i < columns; i++) {
+            points[i] = new Point((int)get(0, i), (int)get(1, i));
 
-			points[i] = new Point(get(0, i), get(1, i));
+        }
 
-		}
+        return points;
 
-		return points;
+    }
 
-	}
+    public boolean isIdentity() {
+        return identity;
+    }
 
-	public boolean isIdentity() {
-		return identity;
-	}
+    public int getRows() {
+        return rows;
+    }
 
-	public int getRows() {
-		return rows;
-	}
+    public int getColumns() {
+        return columns;
+    }
 
-	public int getColumns() {
-		return columns;
-	}
-
-	@Override
-	public Iterator<ArrayList<Integer>> iterator() {
-		return Arrays.asList(matrix).iterator();
-	}
+    @Override
+    public Iterator<ArrayList<Double>> iterator() {
+        return Arrays.asList(matrix).iterator();
+    }
 
 }

@@ -8,22 +8,21 @@ public interface IMatrix {
 
 	void producto(MatrixModel other);
 
-	void escalar(int escala);									// Zoom in/out
+	void escalar(double escala);									
 
-	void escalarAt(int variableIndex, int escala);				// Zoom in/out At variableIndex
+	void escalarAt(int variableIndex, double escala);				
 
-	//void escalarY(int escalaY);							// Zoom in/out Y
-	void escalar(int[] escalas);						  // Zoom in/out Y
+	void escalar(double[] escalas);						  
 
-	void rotacion(double angulo);							// Rotate left/right
+	void rotacion(double angulo);							
 
-	void traslacion(int[] ts);							  // Up | Down | Left | Right | 
+	void traslacion(double[] ts);							  
 
-	void traslacionAt(int variableIndex, int t);
+	void traslacionAt(int variableIndex, double t);
 
-	boolean addPoint(int[] point);
+	boolean addPoint(double[] point);
 
-	boolean setValueAt(int row, int column, int value);
+	boolean setValueAt(int row, int column, double value);
 
-	int get(int row, int column);
+	double get(int row, int column);
 }

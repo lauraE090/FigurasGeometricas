@@ -92,7 +92,7 @@ public abstract class FiguraModel implements Iterable<Point>, IDrawable {
 			
 		}
 
-		return nombre + "{\n" + String.join(", \n", puntosStr) + "\n}";
+		return nombre;
 	}
 
 }
